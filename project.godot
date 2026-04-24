@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="TheHorde"
+run/main_scene="uid://dyb0rf3xvxi12"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[dotnet]
+
+project/assembly_name="TheHorde"
 
 [input]
 

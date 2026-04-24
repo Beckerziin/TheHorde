@@ -2,12 +2,27 @@ extends CharacterBody2D
 
 
 const SPEED = 250.0
-@onready var player_animation: AnimatedSprite2D = $playerAnimation
+
 var lastDirection: Vector2 = Vector2.RIGHT
 var isAttacking: bool = false
+var hitboxOffset: Vector2
+var strenght: int=20
 
+@onready var player_animation: AnimatedSprite2D = $playerAnimation
+@onready var punch_sound: AudioStreamPlayer2D = $punchSound
+@onready var melee_hitbox: Area2D = $meleeHitbox
+
+
+func _ready() -> void:
+	
+	#Inicia o offset da hitbox
+	hitboxOffset = melee_hitbox.position
+	
 
 func _physics_process(delta: float) -> void:
+
+	#Desativa a hitbox ate um ataque ser detectado
+	melee_hitbox.monitoring = false
 
 	if Input.is_action_just_pressed("attack") and not isAttacking:
 		attack()
@@ -35,6 +50,7 @@ func process_movement()-> void:
 	if direction != Vector2.ZERO:
 		velocity = direction * SPEED
 		lastDirection = direction
+		updateHitboxOffset()
 	else:
 		velocity = Vector2.ZERO
 
@@ -65,10 +81,42 @@ func play_animation(prefix: String, dir: Vector2) -> void:
 #1. ATAQUE CORPO-A-CORPO
 func attack() -> void:
 	isAttacking = true
+	melee_hitbox.monitoring = true
+	punch_sound.play()
 	play_animation("punch", lastDirection)
-	print("attack")
-
+	
 
 func detectFineshedAnimation() -> void:
 	if isAttacking:
 		isAttacking = false
+		
+#===========================
+# SCRIPT PARA HITBOX 
+#===========================
+
+func updateHitboxOffset() -> void:
+	var x := hitboxOffset.x
+	var y := hitboxOffset.y
+	
+	
+	match lastDirection:
+		Vector2.LEFT:
+			melee_hitbox.position = Vector2(-x, y)
+			melee_hitbox.rotation_degrees = 180
+		Vector2.RIGHT:
+			melee_hitbox.position = Vector2(x, y)
+			melee_hitbox.rotation_degrees = 0
+		Vector2.UP:
+			melee_hitbox.position = Vector2(y, -x)
+			melee_hitbox.rotation_degrees = 270
+		Vector2.DOWN:
+			melee_hitbox.position = Vector2(y, x)
+			melee_hitbox.rotation_degrees = 90
+		
+
+
+func _on_melee_hitbox_body_entered(body: Node2D) -> void:
+	if isAttacking && body.name.begins_with('zombie'):
+		print(body.name)
+		body.receiveDamage(strenght, position)
+		print(body.health)
