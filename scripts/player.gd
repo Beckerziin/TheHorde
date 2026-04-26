@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 
-const SPEED = 250.0
+const SPEED = 200.0
 
 var lastDirection: Vector2 = Vector2.RIGHT
 var isAttacking: bool = false

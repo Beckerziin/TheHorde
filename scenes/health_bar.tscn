@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bhram5014oh2n"]
+
+[ext_resource type="Script" uid="uid://mrtivenx1c7k" path="res://scripts/health_bar.gd" id="1_6opq1"]
+[ext_resource type="Texture2D" uid="uid://bui1pvn7k42xc" path="res://assets/images/UI/Health/HP_Small.png" id="1_y3kqx"]
+
+[node name="HealthBar" type="Node2D" unique_id=928979646]
+script = ExtResource("1_6opq1")
+
+[node name="fullSprite" type="Sprite2D" parent="." unique_id=2010930274]
+texture_filter = 1
+texture = ExtResource("1_y3kqx")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 55, 4)

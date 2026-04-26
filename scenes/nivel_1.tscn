@@ -1,11 +1,8 @@
 [gd_scene format=3 uid="uid://dyb0rf3xvxi12"]
 
-[ext_resource type="PackedScene" uid="uid://cjy1oqahuitcq" path="res://scenes/player.tscn" id="1_s5enk"]
-[ext_resource type="PackedScene" uid="uid://dbp3g1npvuade" path="res://scenes/zombie.tscn" id="2_birf2"]
+[ext_resource type="PackedScene" uid="uid://cx1eouubg27ag" path="res://scenes/levels/leve_root.tscn" id="3_gwvgh"]
 
 [node name="Main" type="Node2D" unique_id=1911660930]
 
-[node name="player" parent="." unique_id=642344522 instance=ExtResource("1_s5enk")]
-position = Vector2(52, 241)
-
-[node name="zombie" parent="." unique_id=339442821 instance=ExtResource("2_birf2")]
+[node name="leve_root" parent="." unique_id=1136128412 instance=ExtResource("3_gwvgh")]
+position = Vector2(604.99994, 70.99997)
