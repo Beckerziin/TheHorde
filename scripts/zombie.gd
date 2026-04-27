@@ -3,21 +3,23 @@ extends CharacterBody2D
 const SPEED: int = 40
 const knockbackForce: int = 10
 
-var is_alive: bool = true
+var isAlive: bool = true
 var target = null
-var isAttacking = false
+var targetInRange = false
 var lastDirection: Vector2 = Vector2.DOWN
 var health: int=100
+var strength: int=10
 
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var take_damage_sound: AudioStreamPlayer2D = $takeDamage
-@onready var death_sound: AudioStreamPlayer2D = $deathSound
-@onready var health_bar: Node2D = $HealthBar
-@onready var zombieViewRadius: CollisionShape2D = $zombieSigth/CollisionShape2D
+@onready var zombieAnimations: AnimatedSprite2D = $zombieAnimations
+@onready var takeDamageSound: AudioStreamPlayer2D = $takeDamage
+@onready var deathSound: AudioStreamPlayer2D = $deathSound
+@onready var healthBar: Node2D = $healthBar
+@onready var zombieViewRadius: CollisionShape2D = $sigthArea/sigthHitbox
+@onready var attackTimer: Timer = $attackTimer
 
 
 func _physics_process(delta: float) -> void:
-	if is_alive and target:
+	if isAlive and target:
 		playerTracking(delta)
 		
 	process_animation()
@@ -34,11 +36,12 @@ func playerTracking(delta: float) -> void:
 
 func receiveDamage(damageReceived: int, attackerPosition: Vector2) -> void:
 	health -= damageReceived
-	health_bar.update_health(health)
+	healthBar.update_health(health)
 	if health <=0:
 		_die()
 	else:
-		take_damage_sound.play()
+		if !takeDamageSound.playing:
+			takeDamageSound.play()
 		
 		#knockback
 		var knockbackDirection = (position - attackerPosition).normalized()
@@ -51,18 +54,19 @@ func receiveDamage(damageReceived: int, attackerPosition: Vector2) -> void:
 	
 	
 func _die() -> void:
-	if is_alive:
+	if isAlive:
 		play_animation("death", lastDirection)
-		death_sound.play()
-	is_alive = false
+		deathSound.play()
+	isAlive = false
 	
 	## Desaibilitar colisão
-	$zombieSigth/CollisionShape2D.set_deferred("disabled", true)
-	$CollisionShape2D.set_deferred("disabled", true)
+	$sigthArea/sigthHitbox.set_deferred("disabled", true)
+	$zombieHitbox.set_deferred("disabled", true)
+	$meleeArea/meleeHitbox.set_deferred("disabled", true)
 	
 func process_animation() -> void:
-	if is_alive:
-		if isAttacking == true:
+	if isAlive:
+		if targetInRange == true:
 			return
 		if target != null:
 			play_animation("walk", lastDirection)
@@ -71,20 +75,37 @@ func process_animation() -> void:
 
 func play_animation(prefix: String, dir: Vector2) -> void:
 	if dir.x > 0:
-		animated_sprite_2d.play(prefix + "_right")
+		zombieAnimations.play(prefix + "_right")
 	elif dir.x < 0:
-		animated_sprite_2d.play(prefix + "_left")
+		zombieAnimations.play(prefix + "_left")
 	elif dir.y < 0:
-		animated_sprite_2d.play(prefix + "_up")
+		zombieAnimations.play(prefix + "_up")
 	elif dir.y > 0:
-		animated_sprite_2d.play(prefix + "_down")
+		zombieAnimations.play(prefix + "_down")
 
 func _on_zombie_sigth_body_entered(body: Node2D) -> void:
 	if body.name == 'player':
 		target = body
-		zombieViewRadius.shape.set("radius", 144)
+			
 
 
 func _on_zombie_sigth_body_exited(body: Node2D) -> void:
-	if body.name == 'player':
+	if body.name == 'player': 
 		target = null
+
+
+func _on_melee_area_body_entered(body: Node2D) -> void:
+	if body.name == 'player':
+		targetInRange = true
+		body.receiveDamage(strength)
+		attackTimer.start()
+		
+func _on_melee_area_body_exited(body: Node2D) -> void:
+	if body.name == 'player':
+		targetInRange = false
+		attackTimer.stop()
+
+
+func _on_attack_timer_timeout() -> void:
+	if target and targetInRange:
+		target.receiveDamage(strength)

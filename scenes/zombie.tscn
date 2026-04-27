@@ -660,24 +660,26 @@ streams_count = 2
 stream_0/stream = ExtResource("20_1nid1")
 stream_1/stream = ExtResource("21_fyb12")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fyb12"]
+
 [node name="zombie" type="CharacterBody2D" unique_id=339442821]
 position = Vector2(579, 273)
 collision_layer = 2
 script = ExtResource("1_us5qj")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=356690445]
+[node name="zombieAnimations" type="AnimatedSprite2D" parent="." unique_id=356690445]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_a8xvk")
 animation = &"idle_down"
 autoplay = "idle_down"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1048404331]
+[node name="zombieHitbox" type="CollisionShape2D" parent="." unique_id=1048404331]
 shape = SubResource("RectangleShape2D_eskk2")
 
-[node name="zombieSigth" type="Area2D" parent="." unique_id=1948963284]
+[node name="sigthArea" type="Area2D" parent="." unique_id=1948963284]
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="zombieSigth" unique_id=919097718]
+[node name="sigthHitbox" type="CollisionShape2D" parent="sigthArea" unique_id=919097718]
 shape = SubResource("CircleShape2D_eskk2")
 
 [node name="takeDamage" type="AudioStreamPlayer2D" parent="." unique_id=706305199]
@@ -688,9 +690,20 @@ volume_db = -15.134
 stream = SubResource("AudioStreamRandomizer_oscyj")
 volume_db = -15.95
 
-[node name="HealthBar" parent="." unique_id=928979646 instance=ExtResource("22_fyb12")]
+[node name="healthBar" parent="." unique_id=928979646 instance=ExtResource("22_fyb12")]
 position = Vector2(-7, -10)
 scale = Vector2(0.25, 0.25)
 
-[connection signal="body_entered" from="zombieSigth" to="." method="_on_zombie_sigth_body_entered"]
-[connection signal="body_exited" from="zombieSigth" to="." method="_on_zombie_sigth_body_exited"]
+[node name="meleeArea" type="Area2D" parent="." unique_id=180725054]
+metadata/_edit_group_ = true
+
+[node name="meleeHitbox" type="CollisionShape2D" parent="meleeArea" unique_id=1401759832]
+shape = SubResource("RectangleShape2D_fyb12")
+
+[node name="attackTimer" type="Timer" parent="." unique_id=1239686295]
+
+[connection signal="body_entered" from="sigthArea" to="." method="_on_zombie_sigth_body_entered"]
+[connection signal="body_exited" from="sigthArea" to="." method="_on_zombie_sigth_body_exited"]
+[connection signal="body_entered" from="meleeArea" to="." method="_on_melee_area_body_entered"]
+[connection signal="body_exited" from="meleeArea" to="." method="_on_melee_area_body_exited"]
+[connection signal="timeout" from="attackTimer" to="." method="_on_attack_timer_timeout"]

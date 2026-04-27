@@ -1,40 +1,49 @@
 extends CharacterBody2D
 
+signal died
 
-const SPEED = 200.0
-
+var speed: int
 var lastDirection: Vector2 = Vector2.RIGHT
 var isAttacking: bool = false
 var hitboxOffset: Vector2
-var strenght: int=20
-
-@onready var player_animation: AnimatedSprite2D = $playerAnimation
-@onready var punch_sound: AudioStreamPlayer2D = $punchSound
-@onready var melee_hitbox: Area2D = $meleeHitbox
+var strenght: int
+var maxHealth: int
+var health: int
+var alive: bool = true
+@onready var playerAnimations: AnimatedSprite2D = $playerAnimations
+@onready var punchSound: AudioStreamPlayer2D = $punchSound
+@onready var meleeHitbox: Area2D = $meleeArea
+@onready var hurtSound: AudioStreamPlayer2D = $hurtSound
+@onready var damageCooldown: Timer = $damageCooldown
 
 
 func _ready() -> void:
+	#Carregar Stats das variaveis globais
+	health = playerStats.health
+	maxHealth = playerStats.maxHealth
+	strenght = playerStats.strenght
+	speed = playerStats.speed
 	
 	#Inicia o offset da hitbox
-	hitboxOffset = melee_hitbox.position
+	hitboxOffset = meleeHitbox.position
 	
 
 func _physics_process(delta: float) -> void:
 
 	#Desativa a hitbox ate um ataque ser detectado
-	melee_hitbox.monitoring = false
-
-	if Input.is_action_just_pressed("attack") and not isAttacking:
-		attack()
+	meleeHitbox.monitoring = false
 	
-	if isAttacking:
-		velocity = Vector2.ZERO
-		return
+	if alive:
+		if Input.is_action_just_pressed("attack") and not isAttacking:
+			attack()
+		
+		if isAttacking:
+			velocity = Vector2.ZERO
+			return
 
-
-	process_movement()
-	process_animation()
-	move_and_slide()
+		process_movement()
+		process_animation()
+		move_and_slide()
 
 #SCRIPTS DE ATAQUE
 
@@ -48,7 +57,7 @@ func process_movement()-> void:
 	var direction := Input.get_vector("left", "right", "up", "down")
 
 	if direction != Vector2.ZERO:
-		velocity = direction * SPEED
+		velocity = direction * speed
 		lastDirection = direction
 		updateHitboxOffset()
 	else:
@@ -66,13 +75,13 @@ func process_animation() -> void:
 #3. CONFIGURA QUAL A ANIMAÇÃO QUE O PERSONAGEM DEVE TER
 func play_animation(prefix: String, dir: Vector2) -> void:
 	if dir.x > 0:
-		player_animation.play(prefix + "_right")
+		playerAnimations.play(prefix + "_right")
 	elif dir.x < 0:
-		player_animation.play(prefix + "_left")
+		playerAnimations.play(prefix + "_left")
 	elif dir.y < 0:
-		player_animation.play(prefix + "_up")
+		playerAnimations.play(prefix + "_up")
 	elif dir.y > 0:
-		player_animation.play(prefix + "_down")
+		playerAnimations.play(prefix + "_down")
 		
 #===========================
 # SCRIPT PARA ATAQUES 
@@ -81,8 +90,8 @@ func play_animation(prefix: String, dir: Vector2) -> void:
 #1. ATAQUE CORPO-A-CORPO
 func attack() -> void:
 	isAttacking = true
-	melee_hitbox.monitoring = true
-	punch_sound.play()
+	meleeHitbox.monitoring = true
+	punchSound.play()
 	play_animation("punch", lastDirection)
 	
 
@@ -101,22 +110,49 @@ func updateHitboxOffset() -> void:
 	
 	match lastDirection:
 		Vector2.LEFT:
-			melee_hitbox.position = Vector2(-x, y)
-			melee_hitbox.rotation_degrees = 180
+			meleeHitbox.position = Vector2(-x, y)
+			meleeHitbox.rotation_degrees = 180
 		Vector2.RIGHT:
-			melee_hitbox.position = Vector2(x, y)
-			melee_hitbox.rotation_degrees = 0
+			meleeHitbox.position = Vector2(x, y)
+			meleeHitbox.rotation_degrees = 0
 		Vector2.UP:
-			melee_hitbox.position = Vector2(y, -x)
-			melee_hitbox.rotation_degrees = 270
+			meleeHitbox.position = Vector2(y, -x)
+			meleeHitbox.rotation_degrees = 270
 		Vector2.DOWN:
-			melee_hitbox.position = Vector2(y, x)
-			melee_hitbox.rotation_degrees = 90
+			meleeHitbox.position = Vector2(y, x)
+			meleeHitbox.rotation_degrees = 90
+
+func receiveDamage(damageReceived: int) -> void:
+	if alive:
+		if damageCooldown.time_left > 0:
+			return	
+		health -= damageReceived
+		playerStats.health = health
+		print('Player: '+ str(damageReceived) + ' foi recebido, vida atual do player ' + str(health))
+		if health <= 0:
+			die()
 		
+		#Deixar player invecivel dps do dano por um tempinho
+		damageCooldown.start()
+		
+		if !hurtSound.playing:
+			hurtSound.play()
+
+func die() -> void:
+	alive = false
+	play_animation("death_normal", lastDirection)
+	
+	## Desaibilitar colisão
+	$meleeArea/meleeHitbox.set_deferred("disabled", true)
+	$playerHitbox.set_deferred("disabled", true)
+	await playerAnimations.animation_finished
+	print('teste morte')
 
 
-func _on_melee_hitbox_body_entered(body: Node2D) -> void:
+
+func _on_melee_area_body_entered(body: Node2D) -> void:
 	if isAttacking && body.name.begins_with('zombie'):
-		print(body.name)
 		body.receiveDamage(strenght, position)
-		print(body.health)
+		print('Player: ' + str(strenght) + ' de dano dado a ' + str(body.get_instance_id()) + ', vida atual do alvo ' + str(body.health))
+		if body.health <= 0:
+			print('Zumbi(' + str(body.get_instance_id()) + ') morreu')
