@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://bdmhy4oy6w32x" path="res://assets/fonts/PixelOperator.ttf" id="4_phmde"]
 [ext_resource type="Texture2D" uid="uid://ch17vuyphhwkj" path="res://assets/images/UI/Menu/Button_No_Not-Pressed.png" id="5_1jolo"]
 [ext_resource type="Texture2D" uid="uid://bgnqwmxngmgwi" path="res://assets/images/UI/Menu/Button_No_Pressed.png" id="6_aascs"]
+[ext_resource type="Texture2D" uid="uid://8s6wnpsva7ud" path="res://assets/images/UI/Menu/Scrollbar.png" id="7_1jolo"]
 [ext_resource type="Texture2D" uid="uid://j57gkjfi4s36" path="res://assets/images/UI/Menu/Logo ID VISUAL - TheHorde.png" id="12_datv0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_41a7q"]
@@ -19,6 +20,38 @@ font_size = 45
 font = ExtResource("4_phmde")
 font_size = 45
 
+[sub_resource type="ImageTexture" id="ImageTexture_6bsd4"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_1jolo"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aascs"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+texture = ExtResource("7_1jolo")
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jolo"]
+bg_color = Color(0.60784316, 0.627451, 0.6509804, 1)
+border_color = Color(0.29803923, 0.31764707, 0.32941177, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aascs"]
+bg_color = Color(0.7411765, 0.75686276, 0.7764706, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
 [node name="MainMenuSettings" type="Control" unique_id=459309124]
 layout_mode = 3
 anchors_preset = 15
@@ -29,6 +62,7 @@ grow_vertical = 2
 script = ExtResource("1_6bsd4")
 
 [node name="Panel" type="Panel" parent="." unique_id=702073101]
+custom_minimum_size = Vector2(300, 25)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,14 +83,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -242.0
-offset_top = -23.0
-offset_right = 242.0
-offset_bottom = 23.0
+offset_left = -136.0
+offset_top = -172.0
+offset_right = 123.0
+offset_bottom = -126.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Em breve mais informações."
+text = "Volume Master"
 label_settings = SubResource("LabelSettings_idl21")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="sair_settings" type="TextureButton" parent="." unique_id=1509170030]
 texture_filter = 1
@@ -91,5 +127,22 @@ grow_vertical = 2
 text = "Settings"
 label_settings = SubResource("LabelSettings_6bsd4")
 
+[node name="HSlider" type="HSlider" parent="." unique_id=206978981]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 0
+offset_left = 481.0
+offset_top = 248.0
+offset_right = 781.0
+offset_bottom = 360.0
+theme_override_icons/grabber = SubResource("ImageTexture_6bsd4")
+theme_override_icons/grabber_highlight = SubResource("ImageTexture_1jolo")
+theme_override_styles/slider = SubResource("StyleBoxTexture_aascs")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_1jolo")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_aascs")
+max_value = 1.0
+step = 0.001
+ticks_position = 3
+
 [connection signal="pressed" from="sair_settings" to="." method="_on_exit_settings_pressed"]
 [connection signal="pressed" from="sair_settings" to="." method="_on_sair_settings_pressed"]
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]
