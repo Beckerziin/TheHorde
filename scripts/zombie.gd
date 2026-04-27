@@ -5,6 +5,7 @@ const knockbackForce: int = 10
 
 var isAlive: bool = true
 var target = null
+var targetTemp = null
 var targetInRange = false
 var lastDirection: Vector2 = Vector2.DOWN
 var health: int=100
@@ -21,10 +22,10 @@ var strength: int=10
 func _physics_process(delta: float) -> void:
 	if isAlive and target:
 		playerTracking(delta)
-		
-	process_animation()
+		process_animation()
 	
 func playerTracking(delta: float) -> void:
+	
 	var direction = (target.position - position).normalized()
 	position += direction * SPEED * delta
 	
@@ -95,55 +96,62 @@ func play_animation(prefix: String, dir: Vector2) -> void:
 		zombieAnimations.stop()
 		zombieAnimations.frame = zombieAnimations.sprite_frames.get_frame_count(zombieAnimations.animation) - 1
 		return
-
-	if dir.x > 0:
-		zombieAnimations.play(prefix + "_right")
-	elif dir.x < 0:
-		zombieAnimations.play(prefix + "_left")
-	elif dir.y < 0:
-		zombieAnimations.play(prefix + "_up")
-	elif dir.y > 0:
-		zombieAnimations.play(prefix + "_down")
+	
+	if isAlive:
+		if dir.x > 0:
+			zombieAnimations.play(prefix + "_right")
+		elif dir.x < 0:
+			zombieAnimations.play(prefix + "_left")
+		elif dir.y < 0:
+			zombieAnimations.play(prefix + "_up")
+		elif dir.y > 0:
+			zombieAnimations.play(prefix + "_down")
+		
 	if prefix == "death":
 		if dir.x >= 0:
 			zombieAnimations.play("death_right")
 		else:
 			zombieAnimations.play("death_left")
 		return
-
-	if dir.x > 0:
-		zombieAnimations.play(prefix + "_right")
-	elif dir.x < 0:
-		zombieAnimations.play(prefix + "_left")
-	elif dir.y < 0:
-		zombieAnimations.play(prefix + "_up")
-	elif dir.y > 0:
-		zombieAnimations.play(prefix + "_down")
+	
+	if isAlive:
+		if dir.x > 0:
+			zombieAnimations.play(prefix + "_right")
+		elif dir.x < 0:
+			zombieAnimations.play(prefix + "_left")
+		elif dir.y < 0:
+			zombieAnimations.play(prefix + "_up")
+		elif dir.y > 0:
+			zombieAnimations.play(prefix + "_down")
 
 func _on_zombie_sigth_body_entered(body: Node2D) -> void:
-	if body.name == 'player':
+	if body.name == 'player' and isAlive:
 		target = body
 			
 
 
 func _on_zombie_sigth_body_exited(body: Node2D) -> void:
-	if body.name == 'player': 
+	if body.name == 'player' and isAlive: 
 		target = null
 
 
 func _on_melee_area_body_entered(body: Node2D) -> void:
-	if body.name == 'player':
+	if body.name == 'player' and isAlive:
 		targetInRange = true
 		play_animation("attack",lastDirection)
 		body.receiveDamage(strength)
-		attackTimer.start()
+		targetTemp = target
 		target = null
+		attackTimer.start()
+		await zombieAnimations.animation_finished
+		play_animation("idle",lastDirection)
+		
 		
 		
 		
 		
 func _on_melee_area_body_exited(body: Node2D) -> void:
-	if body.name == 'player':
+	if body.name == 'player' and isAlive:
 		await zombieAnimations.animation_finished
 		target = body
 		targetInRange = false
@@ -151,6 +159,8 @@ func _on_melee_area_body_exited(body: Node2D) -> void:
 
 
 func _on_attack_timer_timeout() -> void:
-	if target and targetInRange:
+	if targetTemp and targetInRange and isAlive:
 		play_animation("attack",lastDirection)
-		target.receiveDamage(strength)
+		targetTemp.receiveDamage(strength)
+		await zombieAnimations.animation_finished
+		play_animation("idle",lastDirection)

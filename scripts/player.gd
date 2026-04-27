@@ -15,6 +15,7 @@ var alive: bool = true
 @onready var meleeHitbox: Area2D = $meleeArea
 @onready var hurtSound: AudioStreamPlayer2D = $hurtSound
 @onready var damageCooldown: Timer = $damageCooldown
+@onready var healthBar: Node2D = $playerHealth
 
 
 func _ready() -> void:
@@ -26,10 +27,12 @@ func _ready() -> void:
 	
 	#Inicia o offset da hitbox
 	hitboxOffset = meleeHitbox.position
+	if healthBar:
+		healthBar.update_health(health)
 	
 
 func _physics_process(delta: float) -> void:
-
+	
 	#Desativa a hitbox ate um ataque ser detectado
 	meleeHitbox.monitoring = false
 	
@@ -89,10 +92,11 @@ func play_animation(prefix: String, dir: Vector2) -> void:
 
 #1. ATAQUE CORPO-A-CORPO
 func attack() -> void:
-	isAttacking = true
-	meleeHitbox.monitoring = true
-	punchSound.play()
-	play_animation("punch", lastDirection)
+	if alive:
+		isAttacking = true
+		meleeHitbox.monitoring = true
+		punchSound.play()
+		play_animation("punch", lastDirection)
 	
 
 func detectFineshedAnimation() -> void:
@@ -127,10 +131,12 @@ func receiveDamage(damageReceived: int) -> void:
 		if damageCooldown.time_left > 0:
 			return	
 		health -= damageReceived
+		healthBar.update_health(health)
 		playerStats.health = health
 		print('Player: '+ str(damageReceived) + ' foi recebido, vida atual do player ' + str(health))
 		if health <= 0:
 			die()
+			return
 		
 		#Deixar player invecivel dps do dano por um tempinho
 		damageCooldown.start()
@@ -142,11 +148,13 @@ func die() -> void:
 	alive = false
 	play_animation("death_normal", lastDirection)
 	
-	## Desaibilitar colisão
+	## Desabilitar colisão
 	$meleeArea/meleeHitbox.set_deferred("disabled", true)
 	$playerHitbox.set_deferred("disabled", true)
+
 	await playerAnimations.animation_finished
-	print('teste morte')
+	
+	sceneTransition.changeScene(get_tree().current_scene.scene_file_path)
 
 
 

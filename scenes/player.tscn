@@ -960,7 +960,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ke2ow"]
-size = Vector2(9.5, 6.666667)
+size = Vector2(6.75, 6.666667)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l71n6"]
 size = Vector2(14, 18)
@@ -993,6 +993,7 @@ collision_mask = 2
 metadata/_edit_group_ = true
 
 [node name="meleeHitbox" type="CollisionShape2D" parent="meleeArea" unique_id=2051655171]
+position = Vector2(-1.375, 0)
 shape = SubResource("RectangleShape2D_ke2ow")
 
 [node name="playerHitbox" type="CollisionShape2D" parent="." unique_id=1611504797]
