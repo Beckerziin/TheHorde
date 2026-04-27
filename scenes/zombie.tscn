@@ -665,6 +665,7 @@ stream_1/stream = ExtResource("21_fyb12")
 [node name="zombie" type="CharacterBody2D" unique_id=339442821]
 position = Vector2(579, 273)
 collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_us5qj")
 
 [node name="zombieAnimations" type="AnimatedSprite2D" parent="." unique_id=356690445]

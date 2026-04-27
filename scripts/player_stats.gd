@@ -1,9 +1,9 @@
 extends Node
 
-var strenght: int=20
+var strenght: int=100
 var maxHealth: int= 100
 var health: int= 100
-var speed = 200.0
+var speed = 600.0
 
 
 func reset() ->void:
