@@ -8,8 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://wyv8e8uho8kk" path="res://assets/images/tiles/Roof_TileSet.png" id="3_qi4p1"]
 [ext_resource type="Texture2D" uid="uid://8sddxmu41tb4" path="res://assets/images/tiles/Buildings/Buildings_dark_TileSet.png" id="4_1n1vh"]
 [ext_resource type="PackedScene" uid="uid://dglmj6jya8rhr" path="res://assets/others/layernNigth.tscn" id="5_y73h4"]
-[ext_resource type="PackedScene" uid="uid://3srj7vvbpar8" path="res://scenes/player_health.tscn" id="6_4x4ny"]
 [ext_resource type="Texture2D" uid="uid://djbdkycjfhkrp" path="res://assets/images/Objects/Nature/Dark-Green/Rocks/Rock-grass_Dark-Green.png" id="6_av4md"]
+[ext_resource type="PackedScene" uid="uid://c03cxeptyr7wm" path="res://assets/others/player_health.tscn" id="7_a1ics"]
+[ext_resource type="PackedScene" uid="uid://bfnq2i6ta4qky" path="res://assets/others/kill_counter.tscn" id="7_nlewy"]
 [ext_resource type="Texture2D" uid="uid://cb6kf17lo8qj2" path="res://assets/images/Objects/Nature/Dark-Green/Tree-trunk_2_grass_Dark-Green.png" id="7_s20qb"]
 [ext_resource type="Texture2D" uid="uid://d0kqbvd6sulvg" path="res://assets/images/Objects/Nature/Dark-Green/Tree_1_Spruce_Dark-Green.png" id="8_ae7fv"]
 [ext_resource type="Texture2D" uid="uid://t3xm76ie0c7e" path="res://assets/images/Objects/Nature/Dark-Green/Tree_5_Big_Dark-Green.png" id="11_t3p3s"]
@@ -548,7 +549,7 @@ texture_region_size = Vector2i(39, 45)
 
 [sub_resource type="TileSet" id="TileSet_c1hg4"]
 occlusion_layer_0/light_mask = 1
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 3
 physics_layer_0/collision_mask = 3
 sources/20 = SubResource("TileSetAtlasSource_ddvrk")
 sources/21 = SubResource("TileSetAtlasSource_hhehj")
@@ -2373,7 +2374,7 @@ texture = ExtResource("23_v127j")
 9:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_d8t26"]
-occlusion_layer_0/light_mask = 1
+occlusion_layer_0/light_mask = 3
 occlusion_layer_1/light_mask = 1
 physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_2hojx")
@@ -2756,7 +2757,7 @@ texture = ExtResource("3_qi4p1")
 10:4/0/occlusion_layer_1/polygon_0/polygon = SubResource("OccluderPolygon2D_klc0n")
 
 [sub_resource type="TileSet" id="TileSet_2pml2"]
-occlusion_layer_0/light_mask = 1
+occlusion_layer_0/light_mask = 3
 occlusion_layer_1/light_mask = 1
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_ty7md")
@@ -3025,7 +3026,7 @@ texture = ExtResource("57_2h7ry")
 texture = ExtResource("58_nc08k")
 
 [sub_resource type="TileSet" id="TileSet_e7i0f"]
-occlusion_layer_0/light_mask = 1
+occlusion_layer_0/light_mask = 3
 physics_layer_0/collision_layer = 1
 sources/5 = SubResource("TileSetAtlasSource_4lugy")
 sources/7 = SubResource("TileSetAtlasSource_4i0l7")
@@ -3102,10 +3103,6 @@ tile_set = SubResource("TileSet_w1gav")
 position = Vector2(-179.59985, 862.4)
 scale = Vector2(0.99999994, 0.99999994)
 
-[node name="playerHealth" parent="player" unique_id=1402292267 instance=ExtResource("6_4x4ny")]
-position = Vector2(-188.40086, 124)
-scale = Vector2(1.9999998, 1.9999998)
-
 [node name="Camera2D" type="Camera2D" parent="player" unique_id=273650030]
 position = Vector2(4.7999997, 0.39995766)
 scale = Vector2(0.99999994, 0.99999994)
@@ -3114,7 +3111,7 @@ limit_left = 0
 limit_top = 0
 limit_right = 8920
 
-[node name="CanvasLayer" parent="player/Camera2D" unique_id=840458980 instance=ExtResource("5_y73h4")]
+[node name="noite" parent="player/Camera2D" unique_id=840458980 instance=ExtResource("5_y73h4")]
 
 [node name="PointLight2D2" type="PointLight2D" parent="player" unique_id=388217526]
 scale = Vector2(0.14999998, 0.14999998)
@@ -3122,6 +3119,10 @@ color = Color(1, 1, 1, 0.48235294)
 energy = 1.83
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_y73h4")
+
+[node name="killCounter" parent="player" unique_id=1077149395 instance=ExtResource("7_nlewy")]
+
+[node name="playerHealth" parent="player" unique_id=1367077342 instance=ExtResource("7_a1ics")]
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1392362711]
 position = Vector2(0, -3.8146973e-06)

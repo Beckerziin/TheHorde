@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bfnq2i6ta4qky"]
+
+[ext_resource type="Texture2D" uid="uid://cy0scxtltta82" path="res://assets/images/UI/Menu/ZombieHead.png" id="2_mlguy"]
+[ext_resource type="FontFile" uid="uid://bdmhy4oy6w32x" path="res://assets/fonts/PixelOperator.ttf" id="3_7eh1l"]
+[ext_resource type="Script" uid="uid://cjk2x8rh6hbpn" path="res://scripts/score.gd" id="4_7wlfr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wbjop"]
+font = ExtResource("3_7eh1l")
+font_size = 20
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1077149395]
+
+[node name="zombieHead" type="Sprite2D" parent="." unique_id=1496199382]
+texture_filter = 1
+position = Vector2(1157, 675)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_mlguy")
+
+[node name="score" type="Label" parent="." unique_id=926509890]
+texture_filter = 1
+offset_left = 1184.0
+offset_top = 647.00006
+offset_right = 1193.0
+offset_bottom = 668.00006
+scale = Vector2(2.5, 2.5)
+text = "0"
+label_settings = SubResource("LabelSettings_wbjop")
+script = ExtResource("4_7wlfr")
+
+[node name="limit" type="Label" parent="." unique_id=814459632]
+texture_filter = 1
+offset_left = 1207.0
+offset_top = 648.00006
+offset_right = 1231.0
+offset_bottom = 669.00006
+scale = Vector2(2.5, 2.5)
+text = "/24"
+label_settings = SubResource("LabelSettings_wbjop")

@@ -15,7 +15,8 @@ var alive: bool = true
 @onready var meleeHitbox: Area2D = $meleeArea
 @onready var hurtSound: AudioStreamPlayer2D = $hurtSound
 @onready var damageCooldown: Timer = $damageCooldown
-@onready var healthBar: Node2D = $playerHealth
+@onready var healthBar: CanvasLayer = $playerHealth
+
 
 
 func _ready() -> void:

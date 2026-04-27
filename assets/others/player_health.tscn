@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c03cxeptyr7wm"]
+
+[ext_resource type="Script" uid="uid://bcjyc7g7ixumd" path="res://scripts/player_health.gd" id="1_uygn6"]
+[ext_resource type="Texture2D" uid="uid://dctgmwq1rly0t" path="res://assets/images/UI/Health/HP.png" id="2_aafhc"]
+[ext_resource type="Texture2D" uid="uid://k7wb76c32pcg" path="res://assets/images/UI/Health/HP-Bar.png" id="3_24o0w"]
+
+[node name="playerHealth" type="CanvasLayer" unique_id=1367077342]
+script = ExtResource("1_uygn6")
+
+[node name="fullSprite" type="Sprite2D" parent="." unique_id=666329169]
+texture_filter = 1
+position = Vector2(63, 665)
+scale = Vector2(4, 4)
+texture = ExtResource("2_aafhc")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 43, 6)
+metadata/_edit_group_ = true
+
+[node name="backSprite" type="Sprite2D" parent="." unique_id=710286155]
+texture_filter = 1
+position = Vector2(129, 678)
+scale = Vector2(4, 4)
+texture = ExtResource("3_24o0w")
+metadata/_edit_group_ = true

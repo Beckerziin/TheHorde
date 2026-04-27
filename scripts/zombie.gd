@@ -59,7 +59,8 @@ func _die() -> void:
 		return
 
 	isAlive = false
-
+	playerStats.zombiesKilled += 1
+	print('zumbis Mortos'+ str(playerStats.zombiesKilled))
 	if lastDirection.x >= 0:
 		zombieAnimations.play("death_right")
 	else:
