@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://cppl45toxjuwv"]
+
+[ext_resource type="Script" uid="uid://dug3f78ulvdo1" path="res://scenes/menu-inicial/main_menu.gd" id="1_3c2er"]
+[ext_resource type="Texture2D" uid="uid://cnpg8qcbyajvj" path="res://assets/images/UI/Menu/CENA01_MENU.png" id="1_pla48"]
+[ext_resource type="Texture2D" uid="uid://b8gqg2icwnppu" path="res://assets/images/UI/Menu/JOGAR_NORMAL.png" id="2_dbpl5"]
+[ext_resource type="Texture2D" uid="uid://de105ar28hbab" path="res://assets/images/UI/Menu/JOGAR_HOVER.png" id="3_w877c"]
+[ext_resource type="Texture2D" uid="uid://c242a7tegmq15" path="res://assets/images/UI/Menu/CONTINUAR_INATIVE.png" id="4_3c2er"]
+[ext_resource type="Texture2D" uid="uid://e7ku7g60fe1p" path="res://assets/images/UI/Menu/SETTINGS_NORMAL.png" id="5_146na"]
+[ext_resource type="Texture2D" uid="uid://bjrkyho2glww2" path="res://assets/images/UI/Menu/SETTINGS_HOVER.png" id="6_iysb7"]
+[ext_resource type="Texture2D" uid="uid://dfpa4e1pwgkw2" path="res://assets/images/UI/Menu/SAIR_NORMAL.png" id="7_4kttv"]
+[ext_resource type="Texture2D" uid="uid://bjqjmebajuu0i" path="res://assets/images/UI/Menu/CREDITOS_NORMAL.png" id="7_w877c"]
+[ext_resource type="Texture2D" uid="uid://b75o4k6ety5vo" path="res://assets/images/UI/Menu/CREDITOS_HOVER.png" id="8_3c2er"]
+[ext_resource type="Texture2D" uid="uid://7n6ntgb3psh7" path="res://assets/images/UI/Menu/SAIR_HOVER.png" id="8_gpgvc"]
+[ext_resource type="Texture2D" uid="uid://j57gkjfi4s36" path="res://assets/images/UI/Menu/Logo ID VISUAL - TheHorde.png" id="9_5fmyb"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_41a7q"]
+texture = ExtResource("1_pla48")
+modulate_color = Color(1, 0.88, 0.992, 1)
+
+[node name="MainMenu" type="Control" unique_id=459309124]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3c2er")
+
+[node name="Panel" type="Panel" parent="." unique_id=702073101]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_41a7q")
+
+[node name="jogar" type="TextureButton" parent="." unique_id=887369779]
+texture_filter = 1
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -57.0
+offset_right = 3209.0
+offset_bottom = 777.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.075, 0.075)
+texture_normal = ExtResource("2_dbpl5")
+texture_pressed = ExtResource("3_w877c")
+texture_hover = ExtResource("3_w877c")
+
+[node name="continuar" type="TextureButton" parent="." unique_id=1228709867]
+texture_filter = 1
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = 19.0
+offset_right = 3209.0
+offset_bottom = 853.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.075, 0.075)
+disabled = true
+texture_disabled = ExtResource("4_3c2er")
+
+[node name="settings" type="TextureButton" parent="." unique_id=850850185]
+texture_filter = 1
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = 93.0
+offset_right = 3209.0
+offset_bottom = 927.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.075, 0.075)
+texture_normal = ExtResource("5_146na")
+texture_pressed = ExtResource("6_iysb7")
+texture_hover = ExtResource("6_iysb7")
+
+[node name="creditos" type="TextureButton" parent="." unique_id=413751312]
+texture_filter = 1
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = 165.0
+offset_right = 3209.0
+offset_bottom = 999.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.075, 0.075)
+texture_normal = ExtResource("7_w877c")
+texture_pressed = ExtResource("8_3c2er")
+texture_hover = ExtResource("8_3c2er")
+
+[node name="sair" type="TextureButton" parent="." unique_id=496988447]
+texture_filter = 1
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = 237.0
+offset_right = 3209.0
+offset_bottom = 1071.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.075, 0.075)
+texture_normal = ExtResource("7_4kttv")
+texture_pressed = ExtResource("8_gpgvc")
+texture_hover = ExtResource("8_gpgvc")
+
+[node name="LogoIdVisualTheHorde" type="Sprite2D" parent="." unique_id=906603156]
+position = Vector2(636.44446, 172.99998)
+scale = Vector2(0.063999996, 0.06400001)
+texture = ExtResource("9_5fmyb")
+
+[connection signal="pressed" from="jogar" to="." method="_on_jogar_pressed"]
+[connection signal="pressed" from="settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="creditos" to="." method="_on_creditos_pressed"]
+[connection signal="pressed" from="sair" to="." method="_on_sair_pressed"]

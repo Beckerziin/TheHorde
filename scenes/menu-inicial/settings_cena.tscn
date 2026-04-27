@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://c6sojuiylrbyi"]
+
+[ext_resource type="Script" uid="uid://oluirkn68g63" path="res://scenes/menu-inicial/settings_cena.gd" id="1_6bsd4"]
+[ext_resource type="Texture2D" uid="uid://cnpg8qcbyajvj" path="res://assets/images/UI/Menu/CENA01_MENU.png" id="2_vob8s"]
+[ext_resource type="FontFile" uid="uid://bdmhy4oy6w32x" path="res://assets/fonts/PixelOperator.ttf" id="4_phmde"]
+[ext_resource type="Texture2D" uid="uid://ch17vuyphhwkj" path="res://assets/images/UI/Menu/Button_No_Not-Pressed.png" id="5_1jolo"]
+[ext_resource type="Texture2D" uid="uid://bgnqwmxngmgwi" path="res://assets/images/UI/Menu/Button_No_Pressed.png" id="6_aascs"]
+[ext_resource type="Texture2D" uid="uid://j57gkjfi4s36" path="res://assets/images/UI/Menu/Logo ID VISUAL - TheHorde.png" id="12_datv0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_41a7q"]
+texture = ExtResource("2_vob8s")
+modulate_color = Color(1, 0.88, 0.992, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_idl21"]
+font = ExtResource("4_phmde")
+font_size = 45
+
+[sub_resource type="LabelSettings" id="LabelSettings_6bsd4"]
+font = ExtResource("4_phmde")
+font_size = 45
+
+[node name="MainMenuSettings" type="Control" unique_id=459309124]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6bsd4")
+
+[node name="Panel" type="Panel" parent="." unique_id=702073101]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_41a7q")
+
+[node name="LogoIdVisualTheHorde" type="Sprite2D" parent="." unique_id=906603156]
+position = Vector2(636.44446, 627)
+scale = Vector2(0.033777773, 0.03377778)
+texture = ExtResource("12_datv0")
+
+[node name="Label" type="Label" parent="." unique_id=510965035]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -242.0
+offset_top = -23.0
+offset_right = 242.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Em breve mais informações."
+label_settings = SubResource("LabelSettings_idl21")
+
+[node name="sair_settings" type="TextureButton" parent="." unique_id=1509170030]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.022000002
+anchor_top = 0.042000003
+anchor_right = 0.022000002
+anchor_bottom = 0.042000003
+offset_left = -18.160017
+offset_top = -20.24001
+offset_right = -9.160017
+offset_bottom = -10.601452
+scale = Vector2(4.15, 4.15)
+texture_normal = ExtResource("5_1jolo")
+texture_pressed = ExtResource("6_aascs")
+texture_hover = ExtResource("6_aascs")
+
+[node name="Label2" type="Label" parent="." unique_id=2036473432]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -577.0
+offset_top = -357.0
+offset_right = -93.0
+offset_bottom = -309.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_6bsd4")
+
+[connection signal="pressed" from="sair_settings" to="." method="_on_exit_settings_pressed"]
+[connection signal="pressed" from="sair_settings" to="." method="_on_sair_settings_pressed"]
