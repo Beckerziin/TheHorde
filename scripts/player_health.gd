@@ -6,6 +6,14 @@ extends CanvasLayer
 @onready var default_height = health_bar.region_rect.size.y
 
 func update_health(new_health: int) -> void:
-	#resize health_bar
-	var new_width = (new_health / 100.0) * default_width	
-	health_bar.region_rect = Rect2(0,0, new_width, default_height)
+
+	var new_width = int(
+		(float(new_health) / 100.0) * default_width
+	)
+
+	health_bar.region_rect = Rect2(
+		0,
+		0,
+		new_width,
+		default_height
+	)
