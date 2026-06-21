@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://dd87grxqqfli2"]
+[gd_scene format=3 uid="uid://8hx47ypy0cu8"]
 
-[ext_resource type="Script" uid="uid://bl3172odovr4k" path="res://scenes/inventory_hud.gd" id="1_caulm"]
+[ext_resource type="Script" path="res://scenes/inventory_hud.gd" id="1_caulm"]
 
 [node name="InventoryHUD" type="CanvasLayer" unique_id=1182405277]
 script = ExtResource("1_caulm")

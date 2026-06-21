@@ -662,9 +662,6 @@ stream_1/stream = ExtResource("21_fyb12")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fyb12"]
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_fyb12"]
-polygon = PackedVector2Array(-1, -7, -5, -5, -4, 7, 3, 7, 4, -1, 3, -6)
-
 [node name="zombie" type="CharacterBody2D" unique_id=339442821]
 position = Vector2(579, 273)
 collision_layer = 3
@@ -705,9 +702,6 @@ metadata/_edit_group_ = true
 shape = SubResource("RectangleShape2D_fyb12")
 
 [node name="attackTimer" type="Timer" parent="." unique_id=1239686295]
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="." unique_id=1997020477]
-occluder = SubResource("OccluderPolygon2D_fyb12")
 
 [connection signal="body_entered" from="sigthArea" to="." method="_on_zombie_sigth_body_entered"]
 [connection signal="body_exited" from="sigthArea" to="." method="_on_zombie_sigth_body_exited"]

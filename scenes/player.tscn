@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://o6pfw4mo1q0m" path="res://assets/images/player/Idle/Character_side-left_idle-Sheet6.png" id="8_dt7fs"]
 [ext_resource type="Texture2D" uid="uid://c8cy2ty7drm1k" path="res://assets/images/player/Idle/Character_side_idle-Sheet6.png" id="9_wqfne"]
 [ext_resource type="Texture2D" uid="uid://rs15ev76bh3e" path="res://assets/images/player/Idle/Character_up_idle-Sheet6.png" id="10_wnwbv"]
+[ext_resource type="Texture2D" uid="uid://busuccqxn7jrh" path="res://assets/images/player/Idle/Character_down_idle_no-hands-Sheet6.png" id="10_wqfne"]
 [ext_resource type="Texture2D" uid="uid://dvkydqiwwct50" path="res://assets/images/player/Pick-up/Character_down_Pick-up-Sheet3.png" id="11_gl8cc"]
 [ext_resource type="Texture2D" uid="uid://bl1kplqawf40p" path="res://assets/images/player/Pick-up/Character_side-left_Pick-up-Sheet3.png" id="12_487ah"]
 [ext_resource type="Texture2D" uid="uid://4kpjeb4hyuev" path="res://assets/images/player/Pick-up/Character_side_Pick-up-Sheet3.png" id="13_md1ol"]
@@ -28,7 +29,7 @@
 [ext_resource type="AudioStream" uid="uid://3i6c0opae77y" path="res://assets/sounds/player_hurt_2.mp3" id="26_dt7fs"]
 [ext_resource type="AudioStream" uid="uid://b24biv5dbr83k" path="res://assets/sounds/player_hurt_3.mp3" id="27_wqfne"]
 [ext_resource type="AudioStream" uid="uid://cp1oolpo1hhv7" path="res://assets/sounds/player_hurt_4.mp3" id="28_wnwbv"]
-[ext_resource type="Texture2D" uid="uid://cwqhnp8lrp1hp" path="res://assets/images/UI/Stamina/Stamina_Small.png" id="29_dt7fs"]
+[ext_resource type="Texture2D" uid="uid://cjc6m5s43hdpt" path="res://assets/images/ligthTextures/torch_light.png" id="30_wqfne"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hhpqf"]
 atlas = ExtResource("1_a38lo")
@@ -237,6 +238,30 @@ region = Rect2(48, 0, 12, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_fcu33"]
 atlas = ExtResource("8_dt7fs")
 region = Rect2(60, 0, 12, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gl8cc"]
+atlas = ExtResource("10_wqfne")
+region = Rect2(0, 0, 11, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_487ah"]
+atlas = ExtResource("10_wqfne")
+region = Rect2(11, 0, 11, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_md1ol"]
+atlas = ExtResource("10_wqfne")
+region = Rect2(22, 0, 11, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bj30b"]
+atlas = ExtResource("10_wqfne")
+region = Rect2(33, 0, 11, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jc3p3"]
+atlas = ExtResource("10_wqfne")
+region = Rect2(44, 0, 11, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hax0n"]
+atlas = ExtResource("10_wqfne")
+region = Rect2(55, 0, 11, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qmsq4"]
 atlas = ExtResource("9_wqfne")
@@ -699,6 +724,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_gl8cc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_487ah")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_md1ol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bj30b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jc3p3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hax0n")
+}],
+"loop": true,
+"name": &"idle_nohand_left",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_qmsq4")
 }, {
 "duration": 1.0,
@@ -973,6 +1021,17 @@ stream_1/stream = ExtResource("26_dt7fs")
 stream_2/stream = ExtResource("27_wqfne")
 stream_3/stream = ExtResource("28_wnwbv")
 
+[sub_resource type="Gradient" id="Gradient_pf23h"]
+offsets = PackedFloat32Array(0, 0.0754717, 0.7075472)
+colors = PackedColorArray(1, 1, 1, 1, 0.8019802, 0.8019802, 0.8019802, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wnwbv"]
+gradient = SubResource("Gradient_pf23h")
+width = 1024
+height = 1024
+fill = 1
+fill_from = Vector2(0.4882353, 0.49411765)
+
 [node name="player" type="CharacterBody2D" unique_id=642344522]
 script = ExtResource("1_4ni07")
 
@@ -980,7 +1039,7 @@ script = ExtResource("1_4ni07")
 texture_filter = 1
 scale = Vector2(1.1, 1.1)
 sprite_frames = SubResource("SpriteFrames_vsqmb")
-animation = &"death_normal_left"
+animation = &"run_down"
 
 [node name="punchSound" type="AudioStreamPlayer2D" parent="." unique_id=1553484392]
 stream = ExtResource("24_l71n6")
@@ -1005,19 +1064,33 @@ stream = SubResource("AudioStreamRandomizer_gl8cc")
 volume_db = -10.805
 pitch_scale = 0.9
 
+[node name="playerFlashligth" type="PointLight2D" parent="." unique_id=2033608704]
+position = Vector2(2.5039988, 0)
+scale = Vector2(0.036340516, 0.04131748)
+color = Color(1, 1, 1, 0.48235294)
+energy = 0.59
+range_item_cull_mask = 3
+shadow_enabled = true
+texture = ExtResource("30_wqfne")
+offset = Vector2(2300, 0)
+texture_scale = 7.33
+
+[node name="playerLigth" type="PointLight2D" parent="." unique_id=1753072559]
+position = Vector2(-0.00017089843, -0.8)
+scale = Vector2(0.462584, 0.462584)
+color = Color(1, 1, 1, 0.48235294)
+energy = 0.59
+range_item_cull_mask = 3
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_wnwbv")
+texture_scale = 0.19
+
 [node name="damageCooldown" type="Timer" parent="." unique_id=1303268799]
 wait_time = 0.3
 one_shot = true
 
 [node name="healthRegenDelay" type="Timer" parent="." unique_id=827745931]
 wait_time = 3.0
-
-[node name="fullSprite" type="Sprite2D" parent="healthRegenDelay" unique_id=1325264741]
-texture_filter = 1
-texture = ExtResource("29_dt7fs")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 55, 4)
 
 [connection signal="animation_finished" from="playerAnimations" to="." method="detectFineshedAnimation"]
 [connection signal="body_entered" from="meleeArea" to="." method="_on_melee_area_body_entered"]
