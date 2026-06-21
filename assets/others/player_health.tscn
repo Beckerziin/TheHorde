@@ -9,7 +9,7 @@ script = ExtResource("1_uygn6")
 
 [node name="fullSprite" type="Sprite2D" parent="." unique_id=666329169]
 texture_filter = 1
-position = Vector2(63, 665)
+position = Vector2(63, 655)
 scale = Vector2(4, 4)
 texture = ExtResource("2_aafhc")
 centered = false
@@ -19,7 +19,7 @@ metadata/_edit_group_ = true
 
 [node name="backSprite" type="Sprite2D" parent="." unique_id=710286155]
 texture_filter = 1
-position = Vector2(129, 678)
+position = Vector2(129, 668)
 scale = Vector2(4, 4)
 texture = ExtResource("3_24o0w")
 metadata/_edit_group_ = true

@@ -6,33 +6,36 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_wbjop"]
 font = ExtResource("3_7eh1l")
-font_size = 20
+font_size = 50
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=1077149395]
 
 [node name="zombieHead" type="Sprite2D" parent="." unique_id=1496199382]
 texture_filter = 1
-position = Vector2(1157, 675)
+position = Vector2(1152, 677)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_mlguy")
+metadata/_edit_group_ = true
 
 [node name="score" type="Label" parent="." unique_id=926509890]
 texture_filter = 1
-offset_left = 1184.0
-offset_top = 647.00006
-offset_right = 1193.0
-offset_bottom = 668.00006
-scale = Vector2(2.5, 2.5)
+custom_minimum_size = Vector2(10, 0)
+offset_left = 1185.0
+offset_top = 648.0
+offset_right = 1207.0
+offset_bottom = 699.0
 text = "0"
 label_settings = SubResource("LabelSettings_wbjop")
 script = ExtResource("4_7wlfr")
+metadata/_edit_group_ = true
 
 [node name="limit" type="Label" parent="." unique_id=814459632]
 texture_filter = 1
+custom_minimum_size = Vector2(10, 0)
 offset_left = 1207.0
 offset_top = 648.00006
 offset_right = 1231.0
 offset_bottom = 669.00006
-scale = Vector2(2.5, 2.5)
 text = "/24"
 label_settings = SubResource("LabelSettings_wbjop")
+metadata/_edit_group_ = true
