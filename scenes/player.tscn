@@ -28,6 +28,7 @@
 [ext_resource type="AudioStream" uid="uid://3i6c0opae77y" path="res://assets/sounds/player_hurt_2.mp3" id="26_dt7fs"]
 [ext_resource type="AudioStream" uid="uid://b24biv5dbr83k" path="res://assets/sounds/player_hurt_3.mp3" id="27_wqfne"]
 [ext_resource type="AudioStream" uid="uid://cp1oolpo1hhv7" path="res://assets/sounds/player_hurt_4.mp3" id="28_wnwbv"]
+[ext_resource type="Texture2D" uid="uid://cwqhnp8lrp1hp" path="res://assets/images/UI/Stamina/Stamina_Small.png" id="29_dt7fs"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hhpqf"]
 atlas = ExtResource("1_a38lo")
@@ -1008,5 +1009,16 @@ pitch_scale = 0.9
 wait_time = 0.3
 one_shot = true
 
+[node name="healthRegenDelay" type="Timer" parent="." unique_id=827745931]
+wait_time = 3.0
+
+[node name="fullSprite" type="Sprite2D" parent="healthRegenDelay" unique_id=1325264741]
+texture_filter = 1
+texture = ExtResource("29_dt7fs")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 55, 4)
+
 [connection signal="animation_finished" from="playerAnimations" to="." method="detectFineshedAnimation"]
 [connection signal="body_entered" from="meleeArea" to="." method="_on_melee_area_body_entered"]
+[connection signal="timeout" from="healthRegenDelay" to="." method="_on_health_regen_delay_timeout"]

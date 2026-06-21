@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://5ab6j4632cpw"]
+
+[ext_resource type="Script" uid="uid://c0tei5jn2mcw7" path="res://scripts/stamina_bar.gd" id="1_ls725"]
+[ext_resource type="Texture2D" uid="uid://by3dqiguugc5v" path="res://assets/images/UI/Stamina/Stamina_Back_Sprite.png" id="2_ls725"]
+[ext_resource type="Texture2D" uid="uid://cwqhnp8lrp1hp" path="res://assets/images/UI/Stamina/Stamina_Small.png" id="2_orfbf"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=1670658384]
+script = ExtResource("1_ls725")
+
+[node name="fullSprite" type="Sprite2D" parent="." unique_id=241241315]
+texture_filter = 1
+position = Vector2(47, 698.00006)
+scale = Vector2(2.92, 2.92)
+texture = ExtResource("2_orfbf")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 55, 4)
+
+[node name="backSprite" type="Sprite2D" parent="." unique_id=203654093]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(115, 700)
+scale = Vector2(4, 4)
+texture = ExtResource("2_ls725")
+metadata/_edit_group_ = true
