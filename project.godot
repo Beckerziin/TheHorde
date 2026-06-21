@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 playerStats="*uid://ui3v6x5j1ap"
 sceneTransition="*uid://p0dk2pxo2pgp"
+InventoryManager="*uid://b6dgfy8cs0onb"
 
 [display]
 

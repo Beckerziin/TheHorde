@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://cx1eouubg27ag"]
 
 [ext_resource type="Texture2D" uid="uid://bf78c3dm01u7u" path="res://assets/images/tiles/Background_Dark-Green_TileSet.png" id="1_17n5g"]
+[ext_resource type="PackedScene" uid="uid://dd87grxqqfli2" path="res://scenes/inventory_hud.tscn" id="1_noyxt"]
 [ext_resource type="Texture2D" uid="uid://b40rvipmsdlb1" path="res://assets/images/tiles/black_boundarie.png" id="2_jmllw"]
 [ext_resource type="PackedScene" uid="uid://dbp3g1npvuade" path="res://scenes/zombie.tscn" id="2_w1gav"]
 [ext_resource type="Texture2D" uid="uid://cg0k2mbhj64dr" path="res://assets/images/tiles/black_boundarie_no_center.png" id="3_a6njw"]
@@ -66,6 +67,10 @@
 [ext_resource type="Texture2D" uid="uid://bu2p3181tj0sl" path="res://assets/images/Objects/Traffic-cone.png" id="57_nlewy"]
 [ext_resource type="Texture2D" uid="uid://dng8ivfcynuwo" path="res://assets/images/Objects/Bench_5_up.png" id="58_nc08k"]
 [ext_resource type="Texture2D" uid="uid://b17u7uujmkkrn" path="res://assets/images/tiles/Wire-Fence/Wire-Fence_TileSet.png" id="59_2viwe"]
+[ext_resource type="PackedScene" uid="uid://e4qk5l2jmg0u" path="res://scenes/item_coletavel.tscn" id="67_a1ics"]
+[ext_resource type="Texture2D" uid="uid://cfnhxk2qcl7fw" path="res://assets/images/Objects/Pickable/Bat.png" id="69_2msp3"]
+[ext_resource type="Texture2D" uid="uid://n8d8oaeb71cr" path="res://assets/images/Objects/Pickable/Shotgun.png" id="69_si6rx"]
+[ext_resource type="Texture2D" uid="uid://b4052s7sowuhf" path="res://assets/images/Objects/Pickable/Bandage.png" id="71_o06sk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2scs6"]
 texture = ExtResource("1_17n5g")
@@ -3085,6 +3090,8 @@ size = Vector2(20.799805, 28.799988)
 position = Vector2(598.00006, 71.00001)
 scale = Vector2(2.5, 2.5)
 
+[node name="InventoryHUD" parent="." unique_id=1182405277 instance=ExtResource("1_noyxt")]
+
 [node name="ground" type="TileMapLayer" parent="." unique_id=361713908]
 texture_filter = 1
 position = Vector2(0.79995656, 784)
@@ -3114,6 +3121,7 @@ limit_right = 8920
 [node name="noite" parent="player/Camera2D" unique_id=840458980 instance=ExtResource("5_y73h4")]
 
 [node name="PointLight2D2" type="PointLight2D" parent="player" unique_id=388217526]
+position = Vector2(-0.00017089843, -0.8)
 scale = Vector2(0.14999998, 0.14999998)
 color = Color(1, 1, 1, 0.48235294)
 energy = 1.83
@@ -3262,3 +3270,18 @@ metadata/_edit_group_ = true
 position = Vector2(0.39990234, 4.3999634)
 scale = Vector2(0.99999994, 0.99999994)
 shape = SubResource("RectangleShape2D_sjto3")
+
+[node name="ItemColetavel" parent="." unique_id=305148537 instance=ExtResource("67_a1ics")]
+position = Vector2(-200.00002, 870.7999)
+nome_do_item = "Porrete"
+imagem_do_item = ExtResource("69_2msp3")
+
+[node name="ItemColetavel2" parent="." unique_id=1685322480 instance=ExtResource("67_a1ics")]
+position = Vector2(-93.20002, 858.8)
+nome_do_item = "Shotgun"
+imagem_do_item = ExtResource("69_si6rx")
+
+[node name="ItemColetavel3" parent="." unique_id=1190124208 instance=ExtResource("67_a1ics")]
+position = Vector2(-97.20002, 801.5999)
+nome_do_item = "Bandagem"
+imagem_do_item = ExtResource("71_o06sk")

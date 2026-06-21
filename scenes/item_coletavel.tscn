@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://e4qk5l2jmg0u"]
+
+[ext_resource type="Script" uid="uid://dn67ov0b75ce6" path="res://scripts/item_coletavel.gd" id="1_jd6kg"]
+[ext_resource type="Texture2D" uid="uid://cfnhxk2qcl7fw" path="res://assets/images/Objects/Pickable/Bat.png" id="2_357nq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e2p5v"]
+
+[node name="ItemColetavel" type="Area2D" unique_id=1685322480]
+script = ExtResource("1_jd6kg")
+nome_do_item = null
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=939131540]
+texture = ExtResource("2_357nq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1306375939]
+shape = SubResource("RectangleShape2D_e2p5v")
+
+[node name="Label" type="Label" parent="." unique_id=1392455007]
+visible = false
+offset_left = -35.0
+offset_top = -35.0
+offset_right = 33.0
+offset_bottom = -12.0
+text = "[E] Pegar"
