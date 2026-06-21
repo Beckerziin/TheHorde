@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://brxvjnwgcv1bo" path="res://assets/images/furniture/furnitures.png" id="5_qsp8v"]
 [ext_resource type="PackedScene" uid="uid://cjy1oqahuitcq" path="res://scenes/player.tscn" id="6_nt80m"]
 [ext_resource type="Script" uid="uid://cidrknkv1e1gd" path="res://scripts/DayNigthCycle.gd" id="7_ibugp"]
+[ext_resource type="Texture2D" uid="uid://bjnsc1g4wvo8g" path="res://assets/images/ligthTextures/daynightcycle-gradient-texture.tres" id="8_8qukl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_brxtv"]
 texture = ExtResource("1_qpwj6")
@@ -758,7 +759,8 @@ position = Vector2(-0.20019531, 2.4000244)
 scale = Vector2(0.9999998, 0.9999998)
 shape = SubResource("RectangleShape2D_v8d84")
 
-[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=387547419]
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1898231352]
 scale = Vector2(0.99999994, 0.99999994)
 color = Color(0.08712775, 0.10886688, 0.14302969, 1)
 script = ExtResource("7_ibugp")
+gradient = ExtResource("8_8qukl")
