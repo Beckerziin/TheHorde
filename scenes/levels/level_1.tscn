@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://djbdkycjfhkrp" path="res://assets/images/Objects/Nature/Dark-Green/Rocks/Rock-grass_Dark-Green.png" id="6_av4md"]
 [ext_resource type="PackedScene" uid="uid://c03cxeptyr7wm" path="res://assets/others/player_health.tscn" id="7_a1ics"]
 [ext_resource type="PackedScene" uid="uid://bfnq2i6ta4qky" path="res://assets/others/kill_counter.tscn" id="7_nlewy"]
-[ext_resource type="PackedScene" uid="uid://5ab6j4632cpw" path="res://scenes/Stamina.tscn" id="7_noyxt"]
+[ext_resource type="PackedScene" path="res://scenes/Stamina.tscn" id="7_noyxt"]
 [ext_resource type="Texture2D" uid="uid://cb6kf17lo8qj2" path="res://assets/images/Objects/Nature/Dark-Green/Tree-trunk_2_grass_Dark-Green.png" id="7_s20qb"]
 [ext_resource type="Texture2D" uid="uid://d0kqbvd6sulvg" path="res://assets/images/Objects/Nature/Dark-Green/Tree_1_Spruce_Dark-Green.png" id="8_ae7fv"]
 [ext_resource type="Texture2D" uid="uid://cddprxgbwk3ha" path="res://assets/images/Objects/Nature/Dark-Green/Grass-On-Top-Of-Things/Moss-On-Top_Dark-Green_1.png" id="11_st6wj"]
@@ -3347,7 +3347,6 @@ gradient = ExtResource("82_h8f0m")
 [node name="ItemColetavel" parent="." unique_id=305148537 instance=ExtResource("67_a1ics")]
 texture_filter = 1
 position = Vector2(-200.00002, 870.7999)
-nome_do_item = "Porrete"
 imagem_do_item = ExtResource("69_2msp3")
 
 [node name="ItemColetavel2" parent="." unique_id=1685322480 instance=ExtResource("67_a1ics")]
