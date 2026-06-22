@@ -5,9 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://cg0k2mbhj64dr" path="res://assets/images/tiles/black_boundarie_no_center.png" id="3_8qukl"]
 [ext_resource type="Texture2D" uid="uid://j3tnqibanes" path="res://assets/images/furniture/interiors_demo.png" id="4_3p04p"]
 [ext_resource type="Texture2D" uid="uid://brxvjnwgcv1bo" path="res://assets/images/furniture/furnitures.png" id="5_qsp8v"]
+[ext_resource type="Texture2D" uid="uid://cjedojhjscppd" path="res://assets/images/UI/mapa.png" id="6_3p04p"]
 [ext_resource type="PackedScene" uid="uid://cjy1oqahuitcq" path="res://scenes/player.tscn" id="6_nt80m"]
 [ext_resource type="Script" uid="uid://cidrknkv1e1gd" path="res://scripts/DayNigthCycle.gd" id="7_ibugp"]
 [ext_resource type="Texture2D" uid="uid://bjnsc1g4wvo8g" path="res://assets/images/ligthTextures/daynightcycle-gradient-texture.tres" id="8_8qukl"]
+[ext_resource type="Texture2D" uid="uid://bnmkpcrflw5kb" path="res://assets/images/UI/mapa_grande.png" id="10_qsp8v"]
+[ext_resource type="Script" uid="uid://cniqakm0txpn1" path="res://scenes/levels/mapa_grande.gd" id="11_nt80m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_brxtv"]
 texture = ExtResource("1_qpwj6")
@@ -704,6 +707,9 @@ physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_1yj8c")
 sources/2 = SubResource("TileSetAtlasSource_ndlae")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qsp8v"]
+size = Vector2(36.400024, 21.599972)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v8d84"]
 size = Vector2(18.80017, 28.800049)
 
@@ -733,6 +739,19 @@ texture_filter = 1
 scale = Vector2(0.8, 0.8)
 tile_map_data = PackedByteArray("AAD8//r/AgAAAAgAAAD8//v/AgAAAAkAAAD9//r/AgABAAgAAAD9//v/AgABAAkAAAD+//r/AgACAAgAAAD+//v/AgACAAkAAAD6//z/AgADAAgAAAD6//3/AgADAAkAAAD6//7/AgADAAoAAAD7//z/AgAEAAgAAAD7//3/AgAEAAkAAAD7//7/AgAEAAoAAAD8//3/AgAFAAUAAAD8//7/AgAFAAYAAAD8////AgAFAAcAAAD9//3/AgAGAAUAAAD9//7/AgAGAAYAAAD9////AgAGAAcAAAD+//3/AgAHAAUAAAD+//7/AgAHAAYAAAD+////AgAHAAcAAAD///z/AgAOAAAAAAD///3/AgAOAAEAAAAAAPz/AgAPAAAAAAAAAP3/AgAPAAEAAAAHAPX/AgALAAIAAAAHAPb/AgALAAMAAAAHAPf/AgALAAQAAAAHAPj/AgALAAUAAAAIAPX/AgAMAAIAAAAIAPb/AgAMAAMAAAAIAPf/AgAMAAQAAAAIAPj/AgAMAAUAAAAJAPX/AgANAAIAAAAJAPb/AgANAAMAAAAJAPf/AgANAAQAAAAJAPj/AgANAAUAAAAGAPX/AgAJAAIAAAAGAPb/AgAJAAMAAAACAPj/AgAKAAgAAAACAPn/AgAKAAkAAAACAPr/AgAKAAoAAAADAPj/AgALAAgAAAADAPn/AgALAAkAAAADAPr/AgALAAoAAAABAPn/AgAOAAYAAAABAPr/AgAOAAcAAAAHAPz/AgAMAAgAAAAHAP3/AgAMAAkAAAAHAP7/AgAMAAoAAAAIAPz/AgANAAgAAAAIAP3/AgANAAkAAAAIAP7/AgANAAoAAAAJAPz/AgAOAAgAAAAJAP3/AgAOAAkAAAAJAP7/AgAOAAoAAAD9//f/AgAGAAAAAAD9//j/AgAGAAEAAAD+//f/AgAHAAAAAAD+//j/AgAHAAEAAAD//wAAAQAFAAMAAAD//wEAAQAFAAQAAAAAAAAAAQAGAAMAAAAAAAEAAQAGAAQAAAA=")
 tile_set = SubResource("TileSet_a2w14")
+
+[node name="MesaMapa" type="Area2D" parent="." unique_id=1889577269]
+scale = Vector2(0.9999998, 0.9999998)
+script = ExtResource("11_nt80m")
+
+[node name="Sprite2D" type="Sprite2D" parent="MesaMapa" unique_id=3074306]
+position = Vector2(107.40002, -39.400036)
+scale = Vector2(0.7250006, 0.6250004)
+texture = ExtResource("6_3p04p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MesaMapa" unique_id=201346787]
+position = Vector2(109.000015, -43.200043)
+shape = SubResource("RectangleShape2D_qsp8v")
 
 [node name="props" type="TileMapLayer" parent="." unique_id=503791759]
 texture_filter = 1
@@ -764,3 +783,34 @@ scale = Vector2(0.99999994, 0.99999994)
 color = Color(0.08712775, 0.10886688, 0.14302969, 1)
 script = ExtResource("7_ibugp")
 gradient = ExtResource("8_8qukl")
+
+[node name="InterfaceMapa" type="CanvasLayer" parent="." unique_id=1750330025]
+
+[node name="MapaGrande" type="TextureRect" parent="InterfaceMapa" unique_id=1957275962]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+texture = ExtResource("10_qsp8v")
+
+[node name="Label" type="Label" parent="InterfaceMapa/MapaGrande" unique_id=1242943498]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -113.5
+offset_right = 113.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "A chave está entre as árvores"
+
+[connection signal="body_entered" from="MesaMapa" to="MesaMapa" method="_on_body_entered"]
+[connection signal="body_exited" from="MesaMapa" to="MesaMapa" method="_on_body_exited"]

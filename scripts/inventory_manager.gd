@@ -11,14 +11,15 @@ var dano_das_armas: Dictionary = {
 	"Shotgun": 30
 }
 
-func adicionar_item(nome_do_item: String, quantidade: int, textura: Texture2D) -> void:
+# Adicionamos '= null' como margem de segurança caso algum item venha sem imagem
+func adicionar_item(nome_do_item: String, quantidade: int, imagem: Texture2D = null) -> void:
 	if itens.has(nome_do_item):
 		itens[nome_do_item]["quantidade"] += quantidade
 	else:
-		# Guarda o pacotinho com a quantidade e a textura
+		# Guarda o pacotinho com a quantidade e a imagem
 		itens[nome_do_item] = {
 			"quantidade": quantidade,
-			"textura": textura
+			"imagem": imagem
 		}
 		
 	inventario_atualizado.emit()

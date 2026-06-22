@@ -12,7 +12,8 @@ var slot_selecionado: int = 0
 
 func _ready() -> void:
 	if InventoryManager:
-		InventoryManager.inventario_atualizado.connect(atualizar_textos)
+		# Conectado ao novo nome da função
+		InventoryManager.inventario_atualizado.connect(atualizar_visual)
 	destacar_slot_ativo()
 
 func _input(event: InputEvent) -> void:
@@ -38,7 +39,7 @@ func destacar_slot_ativo() -> void:
 	# Coloca o fundo de borda iluminada no selecionado
 	slots_visuais[slot_selecionado].texture = textura_selecionada
 
-func atualizar_textos() -> void:
+func atualizar_visual() -> void:
 	# 1. Limpa as imagens antigas de todos os slots primeiro
 	for slot in slots_visuais:
 		if slot.has_node("ItemTexture"):
@@ -53,6 +54,7 @@ func atualizar_textos() -> void:
 			
 			# Procura o nó da imagem e coloca o desenho da arma/item
 			if slot_atual.has_node("ItemTexture"):
-				slot_atual.get_node("ItemTexture").texture = dados_do_item["textura"]
+				# CORREÇÃO AQUI: Trocado de "textura" para "imagem"
+				slot_atual.get_node("ItemTexture").texture = dados_do_item["imagem"]
 				
 			index += 1
