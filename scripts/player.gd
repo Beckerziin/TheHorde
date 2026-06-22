@@ -6,7 +6,6 @@ var speed: int
 var lastDirection: Vector2 = Vector2.RIGHT
 var isAttacking: bool = false
 var hitboxOffset: Vector2
-var playerFlashligthOffset: Vector2
 var strenght: int
 var maxHealth: int
 var health: int
@@ -31,8 +30,6 @@ const HEALTH_REGEN_LIMIT := 0.4 # 40%
 
 var can_regen_health := false
 
-var flashlight_on: bool = false 
-
 @onready var playerAnimations: AnimatedSprite2D = $playerAnimations
 @onready var punchSound: AudioStreamPlayer2D = $punchSound
 @onready var meleeHitbox: Area2D = $meleeArea
@@ -41,7 +38,6 @@ var flashlight_on: bool = false
 @onready var healthBar: CanvasLayer = $playerHealth
 @onready var staminaBar: CanvasLayer = $playerStamina
 @onready var healthRegenDelay: Timer = $healthRegenDelay
-@onready var playerFlashligth: PointLight2D = $playerFlashligth
 
 func _ready() -> void:
 	health = playerStats.health
@@ -52,7 +48,6 @@ func _ready() -> void:
 	stamina = maxStamina
 
 	hitboxOffset = meleeHitbox.position
-	playerFlashligthOffset = playerFlashligth.position
 
 	if healthBar:
 		healthBar.update_health(health)
@@ -78,6 +73,39 @@ func _physics_process(delta: float) -> void:
 		process_animation()
 
 		move_and_slide()
+
+#===========================
+# ENTRADA DE INPUT (USAR ITEM)
+#===========================
+
+func _input(event: InputEvent) -> void:
+	if alive:
+		# Captura o clique uma única vez por aperto da tecla Q
+		if event is InputEventKey and event.is_pressed() and not event.is_echo():
+			if event.keycode == KEY_Q: 
+				tentar_usar_item()
+
+func tentar_usar_item() -> void:
+	var item_na_mao = InventoryManager.obter_nome_item_ativo()
+	
+	# Se o item selecionado for a bandagem e o player estiver machucado, cura!
+	if item_na_mao == "Bandagem":
+		if health < maxHealth:
+			curar(30) # Quantidade de vida restaurada
+			InventoryManager.consumir_item_ativo()
+		else:
+			print("Vida já está cheia, bandagem guardada.")
+
+func curar(quantidade_cura: int) -> void:
+	health += quantidade_cura
+	if health > maxHealth:
+		health = maxHealth
+		
+	playerStats.health = health
+	
+	if healthBar:
+		healthBar.update_health(health)
+	print("Curou! Vida atual: ", health)
 
 #===========================
 # STAMINA
@@ -126,6 +154,7 @@ func process_health_regen(delta: float) -> void:
 
 	if healthBar:
 		healthBar.update_health(int(health))
+		
 func _on_health_regen_delay_timeout() -> void:
 	print("REGEN LIBERADA")
 	can_regen_health = true
@@ -206,53 +235,32 @@ func detectFineshedAnimation() -> void:
 		isAttacking = false
 
 #===========================
-# HITBOX/LANTERNA
+# HITBOX
 #===========================
 
-func _input(event: InputEvent) -> void:
-
-	if Input.is_action_just_pressed("flashligth"):
-
-		flashlight_on = !flashlight_on
-
-		if flashlight_on:
-			playerFlashligth.energy = 0.59
-		else:
-			playerFlashligth.energy = 0.0
-
 func updateHitboxOffset() -> void:
-	var xHitbox := hitboxOffset.x
-	var yHitbox := hitboxOffset.y
-	var xFlash := playerFlashligthOffset.x
-	var yFlash := playerFlashligthOffset.y
+	var x := hitboxOffset.x
+	var y := hitboxOffset.y
 
 	match lastDirection:
 		Vector2.LEFT:
-			meleeHitbox.position = Vector2(-xHitbox, yHitbox)
+			meleeHitbox.position = Vector2(-x, y)
 			meleeHitbox.rotation_degrees = 180
-			playerFlashligth.position = Vector2(-xFlash, yFlash)
-			playerFlashligth.rotation_degrees = 180
 
 		Vector2.RIGHT:
-			meleeHitbox.position = Vector2(xHitbox, yHitbox)
+			meleeHitbox.position = Vector2(x, y)
 			meleeHitbox.rotation_degrees = 0
-			playerFlashligth.position = Vector2(xFlash, yFlash)
-			playerFlashligth.rotation_degrees = 0
 
 		Vector2.UP:
-			meleeHitbox.position = Vector2(yHitbox, -xHitbox)
+			meleeHitbox.position = Vector2(y, -x)
 			meleeHitbox.rotation_degrees = 270
-			playerFlashligth.position = Vector2(yFlash, -xFlash)
-			playerFlashligth.rotation_degrees = 270
 
 		Vector2.DOWN:
-			meleeHitbox.position = Vector2(yHitbox, xHitbox)
+			meleeHitbox.position = Vector2(y, x)
 			meleeHitbox.rotation_degrees = 90
-			playerFlashligth.position = Vector2(yFlash, xFlash)
-			playerFlashligth.rotation_degrees = 90
 
 #===========================
-# DANO
+# DANO RECEBIDO
 #===========================
 
 func receiveDamage(damageReceived: int) -> void:
@@ -297,15 +305,20 @@ func die() -> void:
 	sceneTransition.changeScene(
 		get_tree().current_scene.scene_file_path
 	)
+
 #===========================
-# MELEE
+# MELEE AREA (AQUI JÁ SOMA O DANO EXTRA DA ARMA)
 #===========================
 
 func _on_melee_area_body_entered(body: Node2D) -> void:
 
 	if isAttacking and body.name.begins_with("zombie"):
+		
+		# Força base + Dano do item ativo na hotbar
+		var dano_total = strenght + InventoryManager.obter_dano_extra()
 
-		body.receiveDamage(strenght, position)
+		body.receiveDamage(dano_total, position)
+		print("Dano aplicado: ", dano_total) 
 
 		if body.health <= 0:
 			print("Zumbi morreu")
