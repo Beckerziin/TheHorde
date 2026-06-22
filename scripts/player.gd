@@ -6,10 +6,12 @@ var speed: int
 var lastDirection: Vector2 = Vector2.RIGHT
 var isAttacking: bool = false
 var hitboxOffset: Vector2
+var playerFlashligthOffset: Vector2
 var strenght: int
 var maxHealth: int
 var health: int
 var alive: bool = true
+var flashlight_on: bool = false
 
 #===========================
 # STAMINA
@@ -31,6 +33,7 @@ const HEALTH_REGEN_LIMIT := 0.4 # 40%
 var can_regen_health := false
 
 @onready var playerAnimations: AnimatedSprite2D = $playerAnimations
+@onready var handAnimations: AnimatedSprite2D = $handAnimations
 @onready var punchSound: AudioStreamPlayer2D = $punchSound
 @onready var meleeHitbox: Area2D = $meleeArea
 @onready var hurtSound: AudioStreamPlayer2D = $hurtSound
@@ -38,7 +41,9 @@ var can_regen_health := false
 @onready var healthBar: CanvasLayer = $playerHealth
 @onready var staminaBar: CanvasLayer = $playerStamina
 @onready var healthRegenDelay: Timer = $healthRegenDelay
-
+@onready var playerFlashligth: PointLight2D = $playerFlashligth
+@onready var flashligthSound: AudioStreamPlayer2D = $flashligthSound
+   
 func _ready() -> void:
 	health = playerStats.health
 	maxHealth = playerStats.maxHealth
@@ -48,6 +53,7 @@ func _ready() -> void:
 	stamina = maxStamina
 
 	hitboxOffset = meleeHitbox.position
+	playerFlashligthOffset = playerFlashligth.position
 
 	if healthBar:
 		healthBar.update_health(health)
@@ -84,6 +90,15 @@ func _input(event: InputEvent) -> void:
 		if event is InputEventKey and event.is_pressed() and not event.is_echo():
 			if event.keycode == KEY_Q: 
 				tentar_usar_item()
+				
+	if Input.is_action_just_pressed("flashligth"):
+		flashlight_on = !flashlight_on
+		
+		flashligthSound.play()
+		if flashlight_on:
+			playerFlashligth.energy = 0.59
+		else:
+			playerFlashligth.energy = 0.0
 
 func tentar_usar_item() -> void:
 	var item_na_mao = InventoryManager.obter_nome_item_ativo()
@@ -199,14 +214,33 @@ func process_animation() -> void:
 		play_animation("idle", lastDirection)
 
 func play_animation(prefix: String, dir: Vector2) -> void:
+	
+	var item_na_mao = InventoryManager.obter_nome_item_ativo()
+	
 	if dir.x > 0:
 		playerAnimations.play(prefix + "_right")
+		if item_na_mao != 'Porrete':
+			handAnimations.play(prefix + "_right")
+		else:
+			handAnimations.play(prefix + "_porrete_right")
 	elif dir.x < 0:
 		playerAnimations.play(prefix + "_left")
+		if item_na_mao != 'Porrete':
+			handAnimations.play(prefix + "_left")
+		else:
+			handAnimations.play(prefix + "_porrete_left")
 	elif dir.y < 0:
 		playerAnimations.play(prefix + "_up")
+		if item_na_mao != 'Porrete':
+			handAnimations.play(prefix + "_up")
+		else:
+			handAnimations.play(prefix + "_porrete_up")
 	elif dir.y > 0:
 		playerAnimations.play(prefix + "_down")
+		if item_na_mao != 'Porrete':
+			handAnimations.play(prefix + "_down")
+		else:
+			handAnimations.play(prefix + "_porrete_down")
 
 #===========================
 # ATAQUE
@@ -238,26 +272,39 @@ func detectFineshedAnimation() -> void:
 # HITBOX
 #===========================
 
+# HITBOX/LANTERNA
+#===========================
+
 func updateHitboxOffset() -> void:
-	var x := hitboxOffset.x
-	var y := hitboxOffset.y
+	var xHitbox := hitboxOffset.x
+	var yHitbox := hitboxOffset.y
+	var xFlash := playerFlashligthOffset.x
+	var yFlash := playerFlashligthOffset.y
 
 	match lastDirection:
 		Vector2.LEFT:
-			meleeHitbox.position = Vector2(-x, y)
+			meleeHitbox.position = Vector2(-xHitbox, yHitbox)
 			meleeHitbox.rotation_degrees = 180
+			playerFlashligth.position = Vector2(-xFlash, yFlash)
+			playerFlashligth.rotation_degrees = 180
 
 		Vector2.RIGHT:
-			meleeHitbox.position = Vector2(x, y)
+			meleeHitbox.position = Vector2(xHitbox, yHitbox)
 			meleeHitbox.rotation_degrees = 0
+			playerFlashligth.position = Vector2(xFlash, yFlash)
+			playerFlashligth.rotation_degrees = 0
 
 		Vector2.UP:
-			meleeHitbox.position = Vector2(y, -x)
+			meleeHitbox.position = Vector2(yHitbox, -xHitbox)
 			meleeHitbox.rotation_degrees = 270
+			playerFlashligth.position = Vector2(yFlash, -xFlash)
+			playerFlashligth.rotation_degrees = 270
 
 		Vector2.DOWN:
-			meleeHitbox.position = Vector2(y, x)
+			meleeHitbox.position = Vector2(yHitbox, xHitbox)
 			meleeHitbox.rotation_degrees = 90
+			playerFlashligth.position = Vector2(yFlash, xFlash)
+			playerFlashligth.rotation_degrees = 90
 
 #===========================
 # DANO RECEBIDO

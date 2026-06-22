@@ -1,6 +1,9 @@
 # MAIN.gd
 extends Node2D
 
+@onready var ambienceSound: AudioStreamPlayer = $ambienceSound
+@onready var doorSound: AudioStreamPlayer = $doorSound
+
 var level: int = 1
 var current_level_root: Node = null
 
@@ -13,7 +16,13 @@ var zombies_state: Dictionary = {}
 
 
 func _ready() -> void:
+
 	current_level_root = get_node("level_1")
+
+	if not ambienceSound.playing:
+		print("TOCANDO SOM")
+		ambienceSound.play()
+
 	setup_level(current_level_root)
 
 
@@ -22,6 +31,7 @@ func _ready() -> void:
 # ------------------------
 
 func load_level(level_number: int) -> void:
+	doorSound.play()
 	if current_level_root:
 		current_level_root.queue_free()
 		await get_tree().process_frame
@@ -44,10 +54,19 @@ func load_level(level_number: int) -> void:
 
 	# voltar level 1
 	if level_number == 1:
+
+		if not ambienceSound.playing:
+			ambienceSound.play()
+
 		if player and has_saved_position:
 			player.global_position = saved_player_position + Vector2(0, 20)
 
 		restore_zombies()
+
+	else:
+
+		if ambienceSound.playing:
+			ambienceSound.stop()
 
 	if camera:
 		camera.make_current()
