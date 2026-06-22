@@ -7,7 +7,6 @@
 
 [node name="ItemColetavel" type="Area2D" unique_id=1685322480]
 script = ExtResource("1_jd6kg")
-nome_do_item = null
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=939131540]
 texture = ExtResource("2_357nq")
