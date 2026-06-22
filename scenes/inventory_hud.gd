@@ -1,58 +1,48 @@
 extends CanvasLayer
 
-@export var textura_normal: Texture2D       # Imagem "Inventory-Cell.png"
-@export var textura_selecionada: Texture2D  # Imagem "Inventory-Chosen.png"
-
-@onready var slot1: TextureRect = $HBoxContainer/Slot1
-@onready var slot2: TextureRect = $HBoxContainer/Slot2
-@onready var slot3: TextureRect = $HBoxContainer/Slot3
+@onready var slot1: ColorRect = $HBoxContainer/Slot1
+@onready var slot2: ColorRect = $HBoxContainer/Slot2
+@onready var slot3: ColorRect = $HBoxContainer/Slot3
 
 @onready var slots_visuais = [slot1, slot2, slot3]
-var slot_selecionado: int = 0
+var slot_selecionado: int = 0 
 
 func _ready() -> void:
-	if InventoryManager:
-		InventoryManager.inventario_atualizado.connect(atualizar_textos)
+	InventoryManager.inventario_atualizado.connect(atualizar_textos)
 	destacar_slot_ativo()
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.is_pressed() and not event.is_echo():
-		if event.keycode == KEY_1:
-			mudar_slot(0)
-		elif event.keycode == KEY_2:
-			mudar_slot(1)
-		elif event.keycode == KEY_3:
-			mudar_slot(2)
+	if Input.is_key_pressed(KEY_1):
+		mudar_slot(0)
+	elif Input.is_key_pressed(KEY_2):
+		mudar_slot(1)
+	elif Input.is_key_pressed(KEY_3):
+		mudar_slot(2)
 
 func mudar_slot(novo_index: int) -> void:
 	if slot_selecionado != novo_index:
 		slot_selecionado = novo_index
-		InventoryManager.slot_ativo = novo_index
 		destacar_slot_ativo()
 
 func destacar_slot_ativo() -> void:
-	# Coloca o fundo normal em todos
+	# Apaga todos com cinza escuro
 	for slot in slots_visuais:
-		slot.texture = textura_normal
+		slot.color = Color(0.15, 0.15, 0.15)
 	
-	# Coloca o fundo de borda iluminada no selecionado
-	slots_visuais[slot_selecionado].texture = textura_selecionada
+	# Acende o selecionado com cinza claro
+	slots_visuais[slot_selecionado].color = Color(0.6, 0.6, 0.6)
 
 func atualizar_textos() -> void:
-	# 1. Limpa as imagens antigas de todos os slots primeiro
+	# Reseta todos os textos para Vazio antes de escrever os novos
 	for slot in slots_visuais:
-		if slot.has_node("ItemTexture"):
-			slot.get_node("ItemTexture").texture = null
+		slot.get_child(0).text = "Vazio"
 		
 	var index = 0
-	# 2. Passa pelos itens guardados e coloca a imagem deles na tela
 	for nome_item in InventoryManager.itens.keys():
 		if index < 3: 
-			var dados_do_item = InventoryManager.itens[nome_item]
-			var slot_atual = slots_visuais[index]
+			var quantidade = InventoryManager.itens[nome_item]
 			
-			# Procura o nó da imagem e coloca o desenho da arma/item
-			if slot_atual.has_node("ItemTexture"):
-				slot_atual.get_node("ItemTexture").texture = dados_do_item["textura"]
-				
+			# Pega o Label (primeiro filho) do slot e atualiza o texto
+			var label_do_slot = slots_visuais[index].get_child(0)
+			label_do_slot.text = nome_item + "\nx" + str(quantidade)
 			index += 1

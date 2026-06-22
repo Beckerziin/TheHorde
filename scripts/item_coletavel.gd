@@ -15,7 +15,7 @@ func _ready() -> void:
 	if imagem_do_item != null:
 		sprite.texture = imagem_do_item
 	
-	# Configura o texto inicial flutuante e esconde ele
+	# Configura o texto inicial e esconde ele
 	texto_aviso.text = "[E] Pegar " + nome_do_item
 	texto_aviso.hide()
 
@@ -32,6 +32,5 @@ func _on_body_exited(body: Node2D) -> void:
 func _process(delta: float) -> void:
 	if player_perto and Input.is_key_pressed(KEY_E):
 		player_perto = false 
-		# Envia o nome, a quantidade (1) e a imagem para o inventário
-		InventoryManager.adicionar_item(nome_do_item, 1, imagem_do_item) 
+		InventoryManager.adicionar_item(nome_do_item, 1) 
 		queue_free()
