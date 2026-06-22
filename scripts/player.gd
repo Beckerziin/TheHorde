@@ -11,8 +11,6 @@ var strenght: int
 var maxHealth: int
 var health: int
 var alive: bool = true
-var isAiming: bool = false
-var shotgunRangeArea: Area2D = null
 
 #===========================
 # STAMINA
@@ -62,42 +60,17 @@ func _ready() -> void:
 	update_stamina_ui()
 
 func _physics_process(delta: float) -> void:
+
 	meleeHitbox.monitoring = false
 
 	if alive:
-		# Checa se está com a Shotgun na mão para permitir mirar
-		var item_atual = InventoryManager.obter_nome_item_ativo()
-		
-		if item_atual == "Shotgun":
-			# Segurar botão direito do mouse ativa a mira
-			if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-				if not isAiming:
-					isAiming = true
-					print("Mirando com a Shotgun...")
-			else:
-				if isAiming:
-					isAiming = false
-					print("Soltou a mira.")
-		else:
-			isAiming = false # Se trocar de arma, cancela a mira automática
 
-		# Se estiver atacando ou mirando, o boneco fica parado para atirar/bater
-		if isAttacking or isAiming:
-			velocity = Vector2.ZERO
-			# Se o jogador clicar com o botão esquerdo enquanto mira, ele atira!
-			if Input.is_action_just_pressed("attack") and item_atual == "Shotgun":
-				shoot_shotgun()
-			elif isAiming:
-				# Mantém a animação de idle virada para a última direção enquanto mira
-				play_animation("idle", lastDirection)
-				move_and_slide()
-				return
-			else:
-				return
-
-		# Ataque normal de perto para outras armas ou soco
 		if Input.is_action_just_pressed("attack") and not isAttacking:
 			attack()
+
+		if isAttacking:
+			velocity = Vector2.ZERO
+			return
 
 		process_movement(delta)
 		process_stamina(delta)
@@ -105,60 +78,6 @@ func _physics_process(delta: float) -> void:
 		process_animation()
 
 		move_and_slide()
-
-#===========================
-# ATAQUE DE LONGE (SHOTGUN)
-#===========================
-
-func shoot_shotgun() -> void:
-	if not alive:
-		return
-		
-	if stamina < STAMINA_COST_MELEE:
-		return
-		
-	stamina -= STAMINA_COST_MELEE
-	update_stamina_ui()
-	
-	isAttacking = true
-	meleeHitbox.monitoring = true 
-	
-	# Aqui você pode dar play em um som específico de tiro depois!
-	punchSound.play() 
-	
-	play_animation("punch", lastDirection) 
-	print("🔥 BUM! Tiro de Shotgun desferido!")
-
-#===========================
-# ENTRADA DE INPUT (USAR ITEM)
-#===========================
-
-func _input(event: InputEvent) -> void:
-	if alive:
-		if event is InputEventKey and event.is_pressed() and not event.is_echo():
-			if event.keycode == KEY_Q: 
-				tentar_usar_item()
-
-func tentar_usar_item() -> void:
-	var item_na_mao = InventoryManager.obter_nome_item_ativo()
-	
-	if item_na_mao == "Bandagem":
-		if health < maxHealth:
-			curar(30) 
-			InventoryManager.consumir_item_ativo()
-		else:
-			print("Vida já está cheia, bandagem guardada.")
-
-func curar(quantidade_cura: int) -> void:
-	health += quantidade_cura
-	if health > maxHealth:
-		health = maxHealth
-		
-	playerStats.health = health
-	
-	if healthBar:
-		healthBar.update_health(health)
-	print("Curou! Vida atual: ", health)
 
 #===========================
 # STAMINA
@@ -186,20 +105,27 @@ func process_stamina(delta: float) -> void:
 #===========================
 
 func process_health_regen(delta: float) -> void:
+
 	if not can_regen_health:
 		return
 
 	var max_regen_health = int(maxHealth * HEALTH_REGEN_LIMIT)
 
+	print("Vida Atual:", health)
+	print("Limite:", max_regen_health)
+
 	if health >= max_regen_health:
+		print("LIMITE ATINGIDO")
 		return
 
 	health += 1
+
+	print("REGENEROU PARA:", health)
+
 	playerStats.health = int(health)
 
 	if healthBar:
 		healthBar.update_health(int(health))
-		
 func _on_health_regen_delay_timeout() -> void:
 	print("REGEN LIBERADA")
 	can_regen_health = true
@@ -210,14 +136,17 @@ func _on_health_regen_delay_timeout() -> void:
 
 func process_movement(delta: float) -> void:
 	var direction := Input.get_vector("left", "right", "up", "down")
+
 	var current_speed = speed
 
 	if Input.is_action_pressed("run") and stamina > 0:
+
 		current_speed = int(speed * SPRINT_MULTIPLIER)
 
 		if direction != Vector2.ZERO:
 			stamina -= STAMINA_COST_RUN * delta
 			stamina = max(stamina, 0.0)
+
 			update_stamina_ui()
 
 	if direction != Vector2.ZERO:
@@ -251,10 +180,11 @@ func play_animation(prefix: String, dir: Vector2) -> void:
 		playerAnimations.play(prefix + "_down")
 
 #===========================
-# ATAQUE CORPO A CORPO
+# ATAQUE
 #===========================
 
 func attack() -> void:
+
 	if not alive:
 		return
 
@@ -268,6 +198,7 @@ func attack() -> void:
 	meleeHitbox.monitoring = true
 
 	punchSound.play()
+
 	play_animation("punch", lastDirection)
 
 func detectFineshedAnimation() -> void:
@@ -299,30 +230,21 @@ func updateHitboxOffset() -> void:
 		Vector2.LEFT:
 			meleeHitbox.position = Vector2(-xHitbox, yHitbox)
 			meleeHitbox.rotation_degrees = 180
-<<<<<<< Updated upstream
 			playerFlashligth.position = Vector2(-xFlash, yFlash)
 			playerFlashligth.rotation_degrees = 180
 
-=======
->>>>>>> Stashed changes
 		Vector2.RIGHT:
 			meleeHitbox.position = Vector2(xHitbox, yHitbox)
 			meleeHitbox.rotation_degrees = 0
-<<<<<<< Updated upstream
 			playerFlashligth.position = Vector2(xFlash, yFlash)
 			playerFlashligth.rotation_degrees = 0
 
-=======
->>>>>>> Stashed changes
 		Vector2.UP:
 			meleeHitbox.position = Vector2(yHitbox, -xHitbox)
 			meleeHitbox.rotation_degrees = 270
-<<<<<<< Updated upstream
 			playerFlashligth.position = Vector2(yFlash, -xFlash)
 			playerFlashligth.rotation_degrees = 270
 
-=======
->>>>>>> Stashed changes
 		Vector2.DOWN:
 			meleeHitbox.position = Vector2(yHitbox, xHitbox)
 			meleeHitbox.rotation_degrees = 90
@@ -330,11 +252,13 @@ func updateHitboxOffset() -> void:
 			playerFlashligth.rotation_degrees = 90
 
 #===========================
-# DANO RECEBIDO
+# DANO
 #===========================
 
 func receiveDamage(damageReceived: int) -> void:
+
 	if alive:
+
 		if damageCooldown.time_left > 0:
 			return
 
@@ -347,6 +271,7 @@ func receiveDamage(damageReceived: int) -> void:
 			healthBar.update_health(health)
 
 		playerStats.health = health
+
 		print("Player recebeu ", damageReceived, " de dano")
 
 		if health <= 0:
@@ -359,33 +284,29 @@ func receiveDamage(damageReceived: int) -> void:
 			hurtSound.play()
 
 func die() -> void:
+
 	alive = false
+
 	play_animation("death_normal", lastDirection)
 
 	$meleeArea/meleeHitbox.set_deferred("disabled", true)
 	$playerHitbox.set_deferred("disabled", true)
 
 	await playerAnimations.animation_finished
-	sceneTransition.changeScene(get_tree().current_scene.scene_file_path)
+
+	sceneTransition.changeScene(
+		get_tree().current_scene.scene_file_path
+	)
 
 #===========================
-# MELEE / TIRO AREA (IDENTIFICAÇÃO DE ARMA)
+# MELEE
 #===========================
 
 func _on_melee_area_body_entered(body: Node2D) -> void:
-	if isAttacking and body.name.begins_with("zombie"):
-		var item_na_mao = InventoryManager.obter_nome_item_ativo()
-		var dano_total = strenght + InventoryManager.obter_dano_extra()
 
-		body.receiveDamage(dano_total, position)
-		
-		# Feedback e mensagens customizadas de acordo com o item equipado
-		if item_na_mao == "Shotgun":
-			print("Tiro de Shotgun atingiu o zumbi! Dano: ", dano_total)
-		elif item_na_mao == "Porrete":
-			print("Porrete esmagou o zumbi! Dano: ", dano_total)
-		else:
-			print("Soco causou: ", dano_total, " de dano!")
+	if isAttacking and body.name.begins_with("zombie"):
+
+		body.receiveDamage(strenght, position)
 
 		if body.health <= 0:
 			print("Zumbi morreu")
